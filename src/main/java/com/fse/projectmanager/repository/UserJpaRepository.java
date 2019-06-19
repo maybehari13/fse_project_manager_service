@@ -6,6 +6,8 @@
 
 package com.fse.projectmanager.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fse.projectmanager.model.User;
@@ -15,5 +17,5 @@ import com.fse.projectmanager.model.User;
  *
  */
 public interface UserJpaRepository extends JpaRepository<User, Long> {
-
+	List<User> findByManager(boolean manager);
 }
