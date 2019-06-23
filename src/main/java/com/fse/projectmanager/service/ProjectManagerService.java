@@ -8,9 +8,8 @@ package com.fse.projectmanager.service;
 
 import java.util.List;
 
-import com.fse.projectmanager.mapper.ProjectViewResponse;
-import com.fse.projectmanager.mapper.TaskResponse;
-import com.fse.projectmanager.mapper.UserObject;
+import com.fse.projectmanager.mapper.ProjectResponse;
+import com.fse.projectmanager.mapper.TaskRequestResponse;
 import com.fse.projectmanager.model.Parent;
 import com.fse.projectmanager.model.Project;
 import com.fse.projectmanager.model.User;
@@ -24,17 +23,17 @@ public interface ProjectManagerService {
 	/**
 	 * 
 	 */
-	List<TaskResponse> findAllTasks();
+	List<TaskRequestResponse> findAllTasks();
 
 	/**
 	 * @return
 	 */
-	List<ProjectViewResponse> findAllProjects();
+	List<ProjectResponse> findAllProjects();
 
 	/**
 	 * @return
 	 */
-	List<UserObject> findAllUsers();
+	List<User> findAllUsers();
 
 	/**
 	 * @return
@@ -60,19 +59,31 @@ public interface ProjectManagerService {
 	 * @param request
 	 * @return
 	 */
-	UserObject addUser(UserObject request);
+	User addUser(User request);
 
 	/**
 	 * @param id
 	 * @param request
 	 * @return
 	 */
-	UserObject updateUser(UserObject request);
+	User updateUser(User request);
 
 	/**
 	 * @param id
 	 */
 	void deleteUser(Long id);
+
+	/**
+	 * @param request
+	 * @return
+	 */
+	TaskRequestResponse addTask(TaskRequestResponse request);
+
+	/**
+	 * @param request
+	 * @return
+	 */
+	TaskRequestResponse updateTask(TaskRequestResponse request);
 
 
 

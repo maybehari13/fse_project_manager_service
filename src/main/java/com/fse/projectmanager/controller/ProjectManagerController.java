@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fse.projectmanager.mapper.ProjectViewResponse;
-import com.fse.projectmanager.mapper.TaskResponse;
-import com.fse.projectmanager.mapper.UserObject;
+import com.fse.projectmanager.mapper.ProjectResponse;
+import com.fse.projectmanager.mapper.TaskRequestResponse;
 import com.fse.projectmanager.model.Parent;
 import com.fse.projectmanager.model.Project;
 import com.fse.projectmanager.model.User;
@@ -37,17 +36,17 @@ public class ProjectManagerController {
 	private ProjectManagerService projectManagerService;
 	
 	@GetMapping(value="findAllTasks")
-	public List<TaskResponse> findAllTasks(){
+	public List<TaskRequestResponse> findAllTasks(){
 		return projectManagerService.findAllTasks();
 	}
 	
 	@GetMapping(value="findAllProjects")
-	public List<ProjectViewResponse> findAllProjects(){
+	public List<ProjectResponse> findAllProjects(){
 		return projectManagerService.findAllProjects();
 	}
 	
 	@GetMapping(value="findAllUsers")
-	public List<UserObject> findAllUsers(){
+	public List<User> findAllUsers(){
 		return projectManagerService.findAllUsers();
 	}
 	
@@ -67,18 +66,29 @@ public class ProjectManagerController {
 	}
 	
 	@PostMapping(value="addUser")
-	public UserObject addUser(@RequestBody UserObject request){
+	public User addUser(@RequestBody User request){
 		return projectManagerService.addUser(request);
 	}
 	
 	@PostMapping(value="updateUser")
-	public UserObject updateUser(@RequestBody UserObject request){
+	public User updateUser(@RequestBody User request){
 		return projectManagerService.updateUser(request);
 	}
 	
 	@DeleteMapping(value="deleteUser/{id}")
-	public void deleteUser(@PathVariable Long id) {
-			projectManagerService.deleteUser(id);
+	public void deleteUser(@PathVariable Long id){
+		projectManagerService.deleteUser(id);
 	}
+	
+	@PostMapping(value="addTask")
+	public TaskRequestResponse addTask(@RequestBody TaskRequestResponse request){
+		return projectManagerService.addTask(request);
+	}
+	
+	@PostMapping(value="updateTask")
+	public TaskRequestResponse updateTask(@RequestBody TaskRequestResponse request){
+		return projectManagerService.updateTask(request);
+	}
+	
 	
 }

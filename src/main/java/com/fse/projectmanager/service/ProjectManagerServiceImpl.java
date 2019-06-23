@@ -15,9 +15,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fse.projectmanager.mapper.ProjectViewResponse;
-import com.fse.projectmanager.mapper.TaskResponse;
-import com.fse.projectmanager.mapper.UserObject;
+import com.fse.projectmanager.mapper.ProjectResponse;
+import com.fse.projectmanager.mapper.TaskRequestResponse;
 import com.fse.projectmanager.model.Parent;
 import com.fse.projectmanager.model.Project;
 import com.fse.projectmanager.model.Task;
@@ -55,7 +54,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 */
 	@Override
 	@Transactional
-	public UserObject addUser(UserObject request) {
+	public User addUser(User request) {
 		User user = new User();
 
 		user.setFirstName(request.getFirstName());
@@ -63,11 +62,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		user.setEmployeeId(request.getEmployeeId());
 		user.setManager(request.isManager());
 
-		User postUser = new User();
-		postUser = userJpaRepository.save(user);
-		UserObject userResponse = userResponseMapper(postUser);
-
-		return userResponse;
+		return userJpaRepository.saveAndFlush(user);
 	}
 
 	/*
@@ -90,7 +85,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 * com.fse.projectmanager.service.ProjectManagerService#findAllProjects()
 	 */
 	@Override
-	public List<ProjectViewResponse> findAllProjects() {
+	public List<ProjectResponse> findAllProjects() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -101,17 +96,17 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 * @see com.fse.projectmanager.service.ProjectManagerService#findAllTasks()
 	 */
 	@Override
-	public List<TaskResponse> findAllTasks() {
+	public List<TaskRequestResponse> findAllTasks() {
 
 		// Map Entity to required JSON payload
 		List<Task> tasks = new ArrayList<>();
 		tasks = taskJpaRepository.findAll();
 
-		List<TaskResponse> taskResps = new ArrayList<>();
+		List<TaskRequestResponse> taskResps = new ArrayList<>();
 
 		for (Task task : tasks) {
 
-			TaskResponse taskResp = taskResponseMapper(task);
+			TaskRequestResponse taskResp = taskResponseMapper(task);
 
 			taskResps.add(taskResp);
 		}
@@ -125,19 +120,8 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 * @see com.fse.projectmanager.service.ProjectManagerService#findAllUsers()
 	 */
 	@Override
-	public List<UserObject> findAllUsers() {
-		List<User> users = new ArrayList<>();
-		users = userJpaRepository.findAll();
-
-		List<UserObject> userResponses = new ArrayList<>();
-
-		for (User user : users) {
-			UserObject userResponse = userResponseMapper(user);
-
-			userResponses.add(userResponse);
-		}
-
-		return userResponses;
+	public List<User> findAllUsers() {
+		return userJpaRepository.findAll();
 	}
 
 	/*
@@ -195,8 +179,8 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 * @param task
 	 * @return
 	 */
-	private TaskResponse taskResponseMapper(Task task) {
-		TaskResponse taskResp = new TaskResponse();
+	private TaskRequestResponse taskResponseMapper(Task task) {
+		TaskRequestResponse taskResp = new TaskRequestResponse();
 
 		taskResp.setId(task.getTaskId());
 		taskResp.setTask(task.getTask());
@@ -226,7 +210,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 */
 	@Override
 	@Transactional
-	public UserObject updateUser(UserObject request) {
+	public User updateUser(User request) {
 		Optional<User> fetchuser = userJpaRepository.findById(request.getUserId());
 		User user = new User();
 
@@ -239,26 +223,51 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		user.setEmployeeId(request.getEmployeeId());
 		user.setManager(request.isManager());
 
-		User postUser = new User();
-		postUser = userJpaRepository.save(user);
-		UserObject userResponse = userResponseMapper(postUser);
-
-		return userResponse;
+		return userJpaRepository.save(user);
 	}
 
-	/**
-	 * @param postUser
-	 * @return
+	/* (non-Javadoc)
+	 * @see com.fse.projectmanager.service.ProjectManagerService#addTask(com.fse.projectmanager.mapper.TaskRequestResponse)
 	 */
-	private UserObject userResponseMapper(User postUser) {
-		UserObject userResponse = new UserObject();
-
-		userResponse.setUserId(postUser.getUserId());
-		userResponse.setFirstName(postUser.getFirstName());
-		userResponse.setLastName(postUser.getLastName());
-		userResponse.setEmployeeId(postUser.getEmployeeId());
-		userResponse.setManager(postUser.isManager());
-		return userResponse;
+	@Override
+	@Transactional
+	public TaskRequestResponse addTask(TaskRequestResponse request) {
+		Task task = new Task();
+		
+		task.setTask(request.getTask());
+		task.setStartDate(request.getStartDate());
+		task.setEndDate(request.getEndDate());
+		task.setPriority(request.getPriority());
+		if(request.getParentId() != 0){
+			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
+		}
+		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
+		task.setUser(userJpaRepository.getOne(request.getUserId()));
+		
+		return taskResponseMapper(taskJpaRepository.saveAndFlush(task));
 	}
+
+	/* (non-Javadoc)
+	 * @see com.fse.projectmanager.service.ProjectManagerService#updateTask(com.fse.projectmanager.mapper.TaskRequestResponse)
+	 */
+	@Override
+	@Transactional
+	public TaskRequestResponse updateTask(TaskRequestResponse request) {
+		Task task = new Task();
+		
+		task.setTask(request.getTask());
+		task.setStartDate(request.getStartDate());
+		task.setEndDate(request.getEndDate());
+		task.setPriority(request.getPriority());
+		if(request.getParentId() != 0){
+			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
+		}
+		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
+		task.setUser(userJpaRepository.getOne(request.getUserId()));
+		
+		return taskResponseMapper(taskJpaRepository.save(task));
+	}
+	
+	
 
 }
