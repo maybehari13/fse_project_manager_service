@@ -7,6 +7,7 @@
 package com.fse.projectmanager.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fse.projectmanager.mapper.ProjectRequest;
 import com.fse.projectmanager.mapper.ProjectResponse;
 import com.fse.projectmanager.mapper.TaskRequestResponse;
 import com.fse.projectmanager.model.Parent;
@@ -44,6 +46,70 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Autowired
 	private UserJpaRepository userJpaRepository;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fse.projectmanager.service.ProjectManagerService#addParentTask(com.
+	 * fse.projectmanager.model.Parent)
+	 */
+	@Override
+	@Transactional
+	public Parent addParentTask(Parent request) {
+		return parentTaskJpaRepository.saveAndFlush(request);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fse.projectmanager.service.ProjectManagerService#addProject(com.fse.
+	 * projectmanager.mapper.ProjectRequest)
+	 */
+	@Override
+	@Transactional
+	public List<ProjectResponse> addProject(ProjectRequest request) {
+
+		Project projectReq = new Project();
+
+		projectReq.setProject(request.getProject());
+		projectReq.setStartDate(request.getProjectStartDate());
+		projectReq.setEndDate(request.getProjectEndDate());
+		projectReq.setPriority(request.getProjectPriority());
+		projectReq.setUser(userJpaRepository.getOne(request.getUserId()));
+
+		projectJpaRepository.saveAndFlush(projectReq);
+
+		List<ProjectResponse> projectResps = findAllProjects();
+
+		return projectResps;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fse.projectmanager.service.ProjectManagerService#addTask(com.fse.
+	 * projectmanager.mapper.TaskRequestResponse)
+	 */
+	@Override
+	@Transactional
+	public TaskRequestResponse addTask(TaskRequestResponse request) {
+		Task task = new Task();
+
+		task.setTask(request.getTask());
+		task.setStartDate(request.getStartDate());
+		task.setEndDate(request.getEndDate());
+		task.setPriority(request.getPriority());
+		if (request.getParentId() != 0) {
+			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
+		}
+		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
+		task.setUser(userJpaRepository.getOne(request.getUserId()));
+
+		return taskResponseMapper(taskJpaRepository.saveAndFlush(task));
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -86,8 +152,33 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 */
 	@Override
 	public List<ProjectResponse> findAllProjects() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Project> projects = projectJpaRepository.findAll();
+
+		List<ProjectResponse> projectResps = new ArrayList<>();
+
+		for (Project project : projects) {
+
+			ProjectResponse resp = new ProjectResponse();
+
+			Date date = new Date();
+
+			resp.setProjectId(project.getProjectId());
+			resp.setProject(project.getProject());
+			resp.setProjectStartDate(project.getStartDate());
+			resp.setProjectEndDate(project.getEndDate());
+			resp.setProjectPriority(project.getPriority());
+			resp.setUserId(project.getUser().getUserId());
+			resp.setFirstName(project.getUser().getFirstName());
+			resp.setLastName(project.getUser().getLastName());
+			resp.setEmployeeId(project.getUser().getEmployeeId());
+			resp.setNumberOfTasks(taskJpaRepository.countByProjectProjectId(project.getProjectId()));
+			resp.setCompletedTasks(taskJpaRepository.countByProjectProjectIdAndEndDateLessThanEqual(project.getProjectId(), date));
+
+			projectResps.add(resp);
+		}
+
+		return projectResps;
 	}
 
 	/*
@@ -148,17 +239,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.fse.projectmanager.service.ProjectManagerService#getProjectList()
-	 */
-	@Override
-	public List<Project> getProjectList() {
-		return projectJpaRepository.findAll();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.fse.projectmanager.service.ProjectManagerService#getUserList()
 	 */
 	@Override
@@ -205,6 +285,70 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * com.fse.projectmanager.service.ProjectManagerService#updateProject(com.
+	 * fse.projectmanager.mapper.ProjectRequest)
+	 */
+	@Override
+	@Transactional
+	public List<ProjectResponse> updateProject(ProjectRequest request) {
+
+		Project projectReq = new Project();
+		
+		Optional<Project> fetchProject = projectJpaRepository.findById(request.getProjectId());
+		
+		if(fetchProject.isPresent()){
+			projectReq = fetchProject.get();
+		}
+
+		projectReq.setProject(request.getProject());
+		projectReq.setStartDate(request.getProjectStartDate());
+		projectReq.setEndDate(request.getProjectEndDate());
+		projectReq.setPriority(request.getProjectPriority());
+		projectReq.setUser(userJpaRepository.getOne(request.getUserId()));
+
+		projectJpaRepository.save(projectReq);
+
+		List<ProjectResponse> projectResps = findAllProjects();
+
+		return projectResps;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fse.projectmanager.service.ProjectManagerService#updateTask(com.fse.
+	 * projectmanager.mapper.TaskRequestResponse)
+	 */
+	@Override
+	@Transactional
+	public TaskRequestResponse updateTask(TaskRequestResponse request) {
+		
+		Task task = new Task();
+
+		Optional<Task> fetchTask = taskJpaRepository.findById(request.getId());
+		
+		if(fetchTask.isPresent()){
+			task = fetchTask.get();
+		}
+		
+		task.setTask(request.getTask());
+		task.setStartDate(request.getStartDate());
+		task.setEndDate(request.getEndDate());
+		task.setPriority(request.getPriority());
+		if (request.getParentId() != 0) {
+			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
+		}
+		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
+		task.setUser(userJpaRepository.getOne(request.getUserId()));
+
+		return taskResponseMapper(taskJpaRepository.save(task));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * com.fse.projectmanager.service.ProjectManagerService#updateUser(java.lang
 	 * .Long, com.fse.projectmanager.mapper.UserObject)
 	 */
@@ -225,49 +369,5 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 		return userJpaRepository.save(user);
 	}
-
-	/* (non-Javadoc)
-	 * @see com.fse.projectmanager.service.ProjectManagerService#addTask(com.fse.projectmanager.mapper.TaskRequestResponse)
-	 */
-	@Override
-	@Transactional
-	public TaskRequestResponse addTask(TaskRequestResponse request) {
-		Task task = new Task();
-		
-		task.setTask(request.getTask());
-		task.setStartDate(request.getStartDate());
-		task.setEndDate(request.getEndDate());
-		task.setPriority(request.getPriority());
-		if(request.getParentId() != 0){
-			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
-		}
-		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
-		task.setUser(userJpaRepository.getOne(request.getUserId()));
-		
-		return taskResponseMapper(taskJpaRepository.saveAndFlush(task));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.fse.projectmanager.service.ProjectManagerService#updateTask(com.fse.projectmanager.mapper.TaskRequestResponse)
-	 */
-	@Override
-	@Transactional
-	public TaskRequestResponse updateTask(TaskRequestResponse request) {
-		Task task = new Task();
-		
-		task.setTask(request.getTask());
-		task.setStartDate(request.getStartDate());
-		task.setEndDate(request.getEndDate());
-		task.setPriority(request.getPriority());
-		if(request.getParentId() != 0){
-			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
-		}
-		task.setProject(projectJpaRepository.getOne(request.getProjectId()));
-		task.setUser(userJpaRepository.getOne(request.getUserId()));
-		
-		return taskResponseMapper(taskJpaRepository.save(task));
-	}
-	
-	
 
 }

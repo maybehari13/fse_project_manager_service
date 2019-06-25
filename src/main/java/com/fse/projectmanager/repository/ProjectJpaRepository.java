@@ -15,5 +15,5 @@ import com.fse.projectmanager.model.Project;
  *
  */
 public interface ProjectJpaRepository extends JpaRepository<Project, Long> {
-
+	
 }

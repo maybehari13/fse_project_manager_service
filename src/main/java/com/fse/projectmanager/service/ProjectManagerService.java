@@ -8,10 +8,10 @@ package com.fse.projectmanager.service;
 
 import java.util.List;
 
+import com.fse.projectmanager.mapper.ProjectRequest;
 import com.fse.projectmanager.mapper.ProjectResponse;
 import com.fse.projectmanager.mapper.TaskRequestResponse;
 import com.fse.projectmanager.model.Parent;
-import com.fse.projectmanager.model.Project;
 import com.fse.projectmanager.model.User;
 
 /**
@@ -21,57 +21,16 @@ import com.fse.projectmanager.model.User;
 public interface ProjectManagerService {
 
 	/**
-	 * 
-	 */
-	List<TaskRequestResponse> findAllTasks();
-
-	/**
+	 * @param request
 	 * @return
 	 */
-	List<ProjectResponse> findAllProjects();
+	Parent addParentTask(Parent request);
 
-	/**
-	 * @return
-	 */
-	List<User> findAllUsers();
-
-	/**
-	 * @return
-	 */
-	List<Project> getProjectList();
-
-	/**
-	 * @return
-	 */
-	List<String> getUserList();
-
-	/**
-	 * @return
-	 */
-	List<Parent> getParentList();
-
-	/**
-	 * @return
-	 */
-	List<User> getManagerList();
-	
 	/**
 	 * @param request
 	 * @return
 	 */
-	User addUser(User request);
-
-	/**
-	 * @param id
-	 * @param request
-	 * @return
-	 */
-	User updateUser(User request);
-
-	/**
-	 * @param id
-	 */
-	void deleteUser(Long id);
+	List<ProjectResponse> addProject(ProjectRequest request);
 
 	/**
 	 * @param request
@@ -83,9 +42,60 @@ public interface ProjectManagerService {
 	 * @param request
 	 * @return
 	 */
+	User addUser(User request);
+
+	/**
+	 * @param id
+	 */
+	void deleteUser(Long id);
+
+	/**
+	 * @return
+	 */
+	List<ProjectResponse> findAllProjects();
+
+	/**
+	 * 
+	 */
+	List<TaskRequestResponse> findAllTasks();
+
+	/**
+	 * @return
+	 */
+	List<User> findAllUsers();
+
+	/**
+	 * @return
+	 */
+	List<User> getManagerList();
+
+	/**
+	 * @return
+	 */
+	List<Parent> getParentList();
+
+	/**
+	 * @return
+	 */
+	List<String> getUserList();
+
+	/**
+	 * @param request
+	 * @return
+	 */
+	List<ProjectResponse> updateProject(ProjectRequest request);
+
+	/**
+	 * @param request
+	 * @return
+	 */
 	TaskRequestResponse updateTask(TaskRequestResponse request);
 
-
-
+	/**
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	User updateUser(User request);
 
 }
