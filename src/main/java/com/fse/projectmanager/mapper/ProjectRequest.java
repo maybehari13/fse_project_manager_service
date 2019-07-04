@@ -15,7 +15,7 @@ import java.util.Date;
 public class ProjectRequest {
 
 	private Long projectId;
-	private String project;
+	private String projectName;
 	private Date projectStartDate;
 	private Date projectEndDate;
 	private int projectPriority;
@@ -37,16 +37,16 @@ public class ProjectRequest {
 		this.projectId = projectId;
 	}
 	/**
-	 * @return the project
+	 * @return the projectName
 	 */
-	public String getProject() {
-		return project;
+	public String getProjectName() {
+		return projectName;
 	}
 	/**
-	 * @param project the project to set
+	 * @param projectName the projectName to set
 	 */
-	public void setProject(String project) {
-		this.project = project;
+	public void setProjectName(String project) {
+		this.projectName = project;
 	}
 	/**
 	 * @return the projectStartDate

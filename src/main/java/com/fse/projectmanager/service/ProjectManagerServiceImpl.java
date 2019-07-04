@@ -73,7 +73,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 		Project projectReq = new Project();
 
-		projectReq.setProject(request.getProject());
+		projectReq.setProjectName(request.getProjectName());
 		projectReq.setStartDate(request.getProjectStartDate());
 		projectReq.setEndDate(request.getProjectEndDate());
 		projectReq.setPriority(request.getProjectPriority());
@@ -98,7 +98,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	public TaskRequestResponse addTask(TaskRequestResponse request) {
 		Task task = new Task();
 
-		task.setTask(request.getTask());
+		task.setTaskName(request.getTaskName());
 		task.setStartDate(request.getStartDate());
 		task.setEndDate(request.getEndDate());
 		task.setPriority(request.getPriority());
@@ -164,7 +164,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			Date date = new Date();
 
 			resp.setProjectId(project.getProjectId());
-			resp.setProject(project.getProject());
+			resp.setProjectName(project.getProjectName());
 			resp.setProjectStartDate(project.getStartDate());
 			resp.setProjectEndDate(project.getEndDate());
 			resp.setProjectPriority(project.getPriority());
@@ -263,14 +263,14 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		TaskRequestResponse taskResp = new TaskRequestResponse();
 
 		taskResp.setId(task.getTaskId());
-		taskResp.setTask(task.getTask());
+		taskResp.setTaskName(task.getTaskName());
 		taskResp.setStartDate(task.getStartDate());
 		taskResp.setEndDate(task.getEndDate());
 		taskResp.setPriority(task.getPriority());
 		taskResp.setParentId(task.getParent().getParentId());
 		taskResp.setParentTask(task.getParent().getParentTask());
 		taskResp.setProjectId(task.getProject().getProjectId());
-		taskResp.setProject(task.getProject().getProject());
+		taskResp.setProjectName(task.getProject().getProjectName());
 		taskResp.setProjectStartDate(task.getProject().getStartDate());
 		taskResp.setProjectEndDate(task.getProject().getEndDate());
 		taskResp.setProjectPriority(task.getProject().getPriority());
@@ -300,7 +300,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			projectReq = fetchProject.get();
 		}
 
-		projectReq.setProject(request.getProject());
+		projectReq.setProjectName(request.getProjectName());
 		projectReq.setStartDate(request.getProjectStartDate());
 		projectReq.setEndDate(request.getProjectEndDate());
 		projectReq.setPriority(request.getProjectPriority());
@@ -332,7 +332,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			task = fetchTask.get();
 		}
 		
-		task.setTask(request.getTask());
+		task.setTaskName(request.getTaskName());
 		task.setStartDate(request.getStartDate());
 		task.setEndDate(request.getEndDate());
 		task.setPriority(request.getPriority());

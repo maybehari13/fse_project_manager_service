@@ -36,7 +36,7 @@ public class Task{
 	private Long taskId;
 	@NotNull
 	@Column(name="task_desc")
-	private String task;
+	private String taskName;
 	@Column(name="start_date")
 	private Date startDate;
 	@Column(name="end_date")
@@ -71,17 +71,17 @@ public class Task{
 //	}
 
 	/**
-	 * @return the task
+	 * @return the taskName
 	 */
-	public String getTask() {
-		return task;
+	public String getTaskName() {
+		return taskName;
 	}
 
 	/**
-	 * @param task the task to set
+	 * @param taskName the taskName to set
 	 */
-	public void setTask(String task) {
-		this.task = task;
+	public void setTaskName(String task) {
+		this.taskName = task;
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class Project{
 	private Long projectId;
 	@NotNull
 	@Column(name="project_desc")
-	private String project;
+	private String projectName;
 	@Column(name="start_date")
 	private Date startDate;
 	@Column(name="end_date")
@@ -47,17 +47,17 @@ public class Project{
 	private User user;
 
 	/**
-	 * @return the project
+	 * @return the projectName
 	 */
-	public String getProject() {
-		return project;
+	public String getProjectName() {
+		return projectName;
 	}
 
 	/**
-	 * @param project the project to set
+	 * @param projectName the projectName to set
 	 */
-	public void setProject(String project) {
-		this.project = project;
+	public void setProjectName(String project) {
+		this.projectName = project;
 	}
 
 	/**

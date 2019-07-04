@@ -15,14 +15,14 @@ import java.util.Date;
 public class TaskRequestResponse {
 
 	private Long id;
-	private String task;
+	private String taskName;
 	private Date startDate;
 	private Date endDate;
 	private int priority;
 	private Long parentId;
 	private String parentTask;
 	private Long projectId;
-	private String project;
+	private String projectName;
 	private Date projectStartDate;
 	private Date projectEndDate;
 	private int projectPriority;
@@ -44,16 +44,16 @@ public class TaskRequestResponse {
 		this.id = id;
 	}
 	/**
-	 * @return the task
+	 * @return the taskName
 	 */
-	public String getTask() {
-		return task;
+	public String getTaskName() {
+		return taskName;
 	}
 	/**
-	 * @param task the task to set
+	 * @param taskName the taskName to set
 	 */
-	public void setTask(String task) {
-		this.task = task;
+	public void setTaskName(String task) {
+		this.taskName = task;
 	}
 	/**
 	 * @return the startDate
@@ -128,16 +128,16 @@ public class TaskRequestResponse {
 		this.projectId = projectId;
 	}
 	/**
-	 * @return the project
+	 * @return the projectName
 	 */
-	public String getProject() {
-		return project;
+	public String getProjectName() {
+		return projectName;
 	}
 	/**
-	 * @param project the project to set
+	 * @param projectName the projectName to set
 	 */
-	public void setProject(String project) {
-		this.project = project;
+	public void setProjectName(String project) {
+		this.projectName = project;
 	}
 	/**
 	 * @return the projectStartDate
