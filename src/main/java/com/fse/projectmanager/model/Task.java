@@ -43,87 +43,26 @@ public class Task{
 	private Date endDate;
 	@Range(min=0, max=30)
 	private int priority;
+	@Column(name="task_status")
+	private boolean status = false;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_parent_id")
 	private Parent parent;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="project_project_id")
 	private Project project;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_user_id")
 	private User user;
-
-	/**
-	 * @return the taskId
-	 */
-	public Long getTaskId() {
-		return taskId;
-	}
-
-//	/**
-//	 * @param taskId the taskId to set
-//	 */
-//	public void setTaskId(Long taskId) {
-//		this.taskId = taskId;
-//	}
-
-	/**
-	 * @return the taskName
-	 */
-	public String getTaskName() {
-		return taskName;
-	}
-
-	/**
-	 * @param taskName the taskName to set
-	 */
-	public void setTaskName(String task) {
-		this.taskName = task;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
+	
 	/**
 	 * @return the endDate
 	 */
 	public Date getEndDate() {
 		return endDate;
-	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	/**
-	 * @return the priority
-	 */
-	public int getPriority() {
-		return priority;
-	}
-
-	/**
-	 * @param priority the priority to set
-	 */
-	public void setPriority(int priority) {
-		this.priority = priority;
 	}
 	
 	/**
@@ -134,17 +73,80 @@ public class Task{
 	}
 
 	/**
-	 * @param parentTask the parentTask to set
+	 * @return the priority
 	 */
-	public void setParent(Parent parent) {
-		this.parent = parent;
+	public int getPriority() {
+		return priority;
 	}
+
+//	/**
+//	 * @param taskId the taskId to set
+//	 */
+//	public void setTaskId(Long taskId) {
+//		this.taskId = taskId;
+//	}
 
 	/**
 	 * @return the project
 	 */
 	public Project getProject() {
 		return project;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @return the taskId
+	 */
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	/**
+	 * @return the taskName
+	 */
+	public String getTaskName() {
+		return taskName;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public boolean isStatus() {
+		return status;
+	}
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	/**
+	 * @param parentTask the parentTask to set
+	 */
+	public void setParent(Parent parent) {
+		this.parent = parent;
+	}
+	
+	/**
+	 * @param priority the priority to set
+	 */
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 	/**
@@ -155,10 +157,24 @@ public class Task{
 	}
 
 	/**
-	 * @return the user
+	 * @param startDate the startDate to set
 	 */
-	public User getUser() {
-		return user;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	/**
+	 * @param taskName the taskName to set
+	 */
+	public void setTaskName(String task) {
+		this.taskName = task;
 	}
 
 	/**

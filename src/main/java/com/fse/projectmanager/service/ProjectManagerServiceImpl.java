@@ -7,7 +7,6 @@
 package com.fse.projectmanager.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -161,8 +160,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 			ProjectResponse resp = new ProjectResponse();
 
-			Date date = new Date();
-
 			resp.setProjectId(project.getProjectId());
 			resp.setProjectName(project.getProjectName());
 			resp.setProjectStartDate(project.getStartDate());
@@ -173,7 +170,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			resp.setLastName(project.getUser().getLastName());
 			resp.setEmployeeId(project.getUser().getEmployeeId());
 			resp.setNumberOfTasks(taskJpaRepository.countByProjectProjectId(project.getProjectId()));
-			resp.setCompletedTasks(taskJpaRepository.countByProjectProjectIdAndEndDateLessThanEqual(project.getProjectId(), date));
+			resp.setCompletedTasks(taskJpaRepository.countByProjectProjectIdAndStatus(project.getProjectId(), true));
 
 			projectResps.add(resp);
 		}
@@ -267,6 +264,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		taskResp.setStartDate(task.getStartDate());
 		taskResp.setEndDate(task.getEndDate());
 		taskResp.setPriority(task.getPriority());
+		taskResp.setStatus(task.isStatus());
 		taskResp.setParentId(task.getParent().getParentId());
 		taskResp.setParentTask(task.getParent().getParentTask());
 		taskResp.setProjectId(task.getProject().getProjectId());
@@ -274,6 +272,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		taskResp.setProjectStartDate(task.getProject().getStartDate());
 		taskResp.setProjectEndDate(task.getProject().getEndDate());
 		taskResp.setProjectPriority(task.getProject().getPriority());
+		taskResp.setProjectStatus(task.getProject().isStatus());
 		taskResp.setUserId(task.getUser().getUserId());
 		taskResp.setFirstName(task.getUser().getFirstName());
 		taskResp.setLastName(task.getUser().getLastName());
@@ -304,6 +303,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		projectReq.setStartDate(request.getProjectStartDate());
 		projectReq.setEndDate(request.getProjectEndDate());
 		projectReq.setPriority(request.getProjectPriority());
+		projectReq.setStatus(request.isStatus());
 		projectReq.setUser(userJpaRepository.getOne(request.getUserId()));
 
 		projectJpaRepository.save(projectReq);
@@ -336,6 +336,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		task.setStartDate(request.getStartDate());
 		task.setEndDate(request.getEndDate());
 		task.setPriority(request.getPriority());
+		task.setStatus(request.isStatus());
 		if (request.getParentId() != 0) {
 			task.setParent(parentTaskJpaRepository.getOne(request.getParentId()));
 		}
