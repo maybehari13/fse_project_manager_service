@@ -171,6 +171,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			resp.setEmployeeId(project.getUser().getEmployeeId());
 			resp.setNumberOfTasks(taskJpaRepository.countByProjectProjectId(project.getProjectId()));
 			resp.setCompletedTasks(taskJpaRepository.countByProjectProjectIdAndStatus(project.getProjectId(), true));
+			resp.setStatus(project.isStatus());
 
 			projectResps.add(resp);
 		}
