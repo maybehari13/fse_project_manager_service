@@ -13,11 +13,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>fse-project-manager</name>
 	<description>Spring Boot project for creating a single page Task Manager application</description>
-		<repository>              
-          <id>central</id>
-          <name>Central</name>
-          <url>http://repo1.maven.org/maven2</url>
-		</repository>
+		
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -52,5 +48,11 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+<repository>              
+          <id>central</id>
+          <name>Central</name>
+          <url>http://repo1.maven.org/maven2</url>
+		</repository>
+		</repositories>
 </project>
