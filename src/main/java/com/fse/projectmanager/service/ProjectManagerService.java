@@ -67,17 +67,7 @@ public interface ProjectManagerService {
 	/**
 	 * @return
 	 */
-	List<User> getManagerList();
-
-	/**
-	 * @return
-	 */
 	List<Parent> getParentList();
-
-	/**
-	 * @return
-	 */
-	List<String> getUserList();
 
 	/**
 	 * @param request
