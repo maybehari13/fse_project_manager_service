@@ -77,11 +77,6 @@ public class ProjectManagerController {
 		return projectManagerService.findAllUsers();
 	}
 
-	@GetMapping(value = "getManagerList")
-	public List<User> getManagerList() {
-		return projectManagerService.getManagerList();
-	}
-
 	@GetMapping(value = "getParentList")
 	public List<Parent> getParentList() {
 		return projectManagerService.getParentList();

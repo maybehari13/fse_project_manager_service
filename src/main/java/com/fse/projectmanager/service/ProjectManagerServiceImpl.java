@@ -216,43 +216,13 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.fse.projectmanager.service.ProjectManagerService#getManagerList()
-	 */
-	@Override
-	public List<User> getManagerList() {
-		return userJpaRepository.findByManager(true);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.fse.projectmanager.service.ProjectManagerService#getParentList()
 	 */
 	@Override
 	public List<Parent> getParentList() {
 		return parentTaskJpaRepository.findAll();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fse.projectmanager.service.ProjectManagerService#getUserList()
-	 */
-	@Override
-	public List<String> getUserList() {
-		List<User> users = new ArrayList<>();
-		users = userJpaRepository.findAll();
-
-		List<String> userList = new ArrayList<>();
-
-		for (User user : users) {
-			userList.add(user.getFirstName() + ' ' + user.getLastName());
-		}
-
-		return userList;
-	}
-
+	
 	/**
 	 * @param task
 	 * @return
